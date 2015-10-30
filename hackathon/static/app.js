@@ -62,6 +62,7 @@ app.controller('HeaderController', function($scope, $http, HeaderState) {
 		$http.get('http://localhost:8000/me')
 			.then(function(resp) {
 				$scope.user = resp.data;
+				console.log(resp.data);
 			});
 	};
 
