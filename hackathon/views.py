@@ -38,7 +38,7 @@ def logout(request):
     auth_logout(request)
     return redirect('/login/')
 
-@login_required()
+@login_required(login_url='/login/')
 @csrf_exempt
 def questions_list(request):
     if request.method == 'GET':
@@ -66,7 +66,7 @@ def questions_list(request):
             return JSONResponse(serializer.data, status=201)
         return JSONResponse(serializer.errors, status=400)
 
-@login_required()
+@login_required(login_url='/login/')
 @csrf_exempt
 def questions_edit(request,pk):
     try:
@@ -87,12 +87,38 @@ def questions_edit(request,pk):
         question.delete()
         return HttpResponse(status=204)
 
-@login_required()
+@login_required(login_url='/login/')
 @csrf_exempt
 def my_questions(request):
     if request.method == 'GET':
         questions = models.Question.objects.filter(user_id=request.use.id
                                                    ).order_by('-create_time')[:10]
+        serializer = QuestionSerializer(questions, many=True)
+        return JSONResponse(serializer.data)
+
+
+def get_best_match_questions(questions, keyword, n):
+    print 111
+    ques_dict = {}
+    keys = keyword.split(' ')
+    for question in questions:
+        same_num = 0
+        for key in keys:
+            if question.question.find(key):
+                same_num += 1
+        ques_dict[question] = same_num
+    return questions
+
+
+@login_required(login_url='/login/')
+@csrf_exempt
+def questions_search(request):
+    if request.method == 'POST':
+        data = JSONParser().parse(request)
+        keywords = data['keywords']
+        questions = models.Question.objects.all()
+        questions = get_best_match_questions(questions, keywords, 1)
+        print questions
         serializer = QuestionSerializer(questions, many=True)
         return JSONResponse(serializer.data)
 

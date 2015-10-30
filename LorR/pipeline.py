@@ -19,7 +19,11 @@ def save_profile_picture(backend, user, response, details, is_new=False,
             localFile = open(saveName, 'w')
             localFile.write(response.content)
             localFile.close()
-
-            user_profile = User_Profile.objects.get(id=user.pk)
-            user_profile.avatar = fileName
-            user_profile.save()
+            print 111
+            user_profiles = User_Profile.objects.filter(user_id=user.pk)
+            if user_profiles:
+                user_profile = user_profiles[0]
+                user_profile.avatar = fileName
+                user_profile.save()
+            else:
+                User_Profile.objects.create(user=user, avatar=fileName)
