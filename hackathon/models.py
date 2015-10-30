@@ -10,7 +10,8 @@ class Question(models.Model):
     left = models.CharField(max_length=128)
     right = models.CharField(max_length=128)
     view_count = models.PositiveIntegerField(default=0)
-    answer_count = models.PositiveIntegerField(default=0)
+    left_count = models.PositiveIntegerField(default=0)
+    right_count = models.PositiveIntegerField(default=0)
     report_count = models.PositiveIntegerField(default=0)
     skip_count = models.PositiveIntegerField(default=0)
     url =  models.URLField(max_length=512, null=True)
@@ -38,4 +39,3 @@ class AnswerHistory(models.Model):
     
     class Meta:
         db_table = 'answer_history_tab'
-        unique_together = ('user','question')
