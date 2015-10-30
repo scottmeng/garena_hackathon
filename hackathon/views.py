@@ -103,7 +103,10 @@ def user(request):
         try:
             user = User.objects.get(id=request.user.id)
             serializer = UserSerializer(user)
-            return JSONResponse(serializer.data)
+            mydata = serializer.data
+            user_profile = models.User_Profile.objects.get(id=user.pk)
+            mydata['avatar'] = '/avatar/{0}_social.jpg'.format(user.pk)
+            return JSONResponse(mydata)
         except models.User.DoesNotExist:
             return HttpResponse(status=404)
 
