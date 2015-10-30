@@ -18,6 +18,7 @@ from django.db import transaction
 from urllib import FancyURLopener
 import urllib2
 import json
+import re
 
 class JSONResponse(HttpResponse):
     """
@@ -79,6 +80,7 @@ class MyOpener(FancyURLopener):
 
 def fetch_related_image(question):
     searchTerm = question
+    searchTerm = re.sub('[^0-9a-zA-Z]+', ' ', searchTerm)
     searchTerm = searchTerm.replace(' ','%20')
 
     url = ('https://ajax.googleapis.com/ajax/services/search/images?' + 'v=1.0&q='+searchTerm+'&start=0&userip=MyIP')
