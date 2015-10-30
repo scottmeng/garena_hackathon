@@ -1,8 +1,6 @@
-__author__ = 'Moonlight'
-
 from models import Question
 from models import AnswerHistory
-
+from django.contrib.auth.models import User
 from rest_framework import serializers
 
 
@@ -22,3 +20,8 @@ class AnswerHistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = AnswerHistory
         fields = ('user', 'question', 'answer')
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'email')

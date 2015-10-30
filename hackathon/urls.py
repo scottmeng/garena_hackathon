@@ -8,7 +8,7 @@ urlpatterns = [
     url(r'^questions/$', 'hackathon.views.questions_list'),
     url(r'^questions/(?P<pk>\d+)/$','hackathon.views.questions_edit'),
     url(r'^questions/me/$','hackathon.views.my_questions'),
-
+    url(r'^me/$','hackathon.views.user'),
     url(r'^answers/$', 'hackathon.views.answers_list'),
     url(r'^answers/(?P<question_id>\d+)/$', 'hackathon.views.answers'),
 ]
