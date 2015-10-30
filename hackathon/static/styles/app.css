@@ -30,3 +30,30 @@
 	height: 30%;
 	font-size: 12px;
 }
+
+.section-answer {
+	width: 18%;
+	padding-top: 15%;
+	padding-bottom: 15%;
+	padding-left: 2%;
+	padding-right: 2%;
+	background-color: #AFAFAF;
+	border-radius: 100% / 50%;
+}
+
+.section-left {
+	float: left;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+	text-align: left;
+}
+
+.section-right {
+	float: right;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+	text-align: right;
+}
+
+.section-answer .answer-label {
+}

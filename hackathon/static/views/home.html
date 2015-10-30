@@ -1,13 +1,17 @@
 <div id="viewport">
-	<div style="height:100px; width:20%; background: #777; float: left" ng-if="curQuestion">{{ curQuestion.left }}</div>
-	<div style="height:100px; width:20%; background: #777; float: right" ng-if="curQuestion">{{ curQuestion.right }}</div>
+	<div class="section-answer section-left" ng-if="topQn" ng-style="{'opacity': 0.3+leftProx*0.7}">
+		<p class="answer-label">{{ topQn.left }}</p>
+	</div>
+	<div class="section-answer section-right" ng-if="topQn" ng-style="{'opacity': 0.3+rightProx*0.7}">
+		<p class="answer-label">{{ topQn.right }}</p>
+	</div>
 
 	<ul class="stack" swing-stack swing-options="options">
 	    <li
 	        swing-card
-	        swing-on-throwoutleft="throwoutleft(eventName, eventObject)"
-	        swing-on-throwoutright="throwoutright(eventName, eventObject)"
-	        swing-on-dragstart="dragstart(eventName, eventObject)"
+	        swing-on-throwoutleft="throwoutleft($index, eventName, eventObject)"
+	        swing-on-throwoutright="throwoutright($index, eventName, eventObject)"
+	        swing-on-dragstart="dragstart($index, eventName, eventObject)"
 	        swing-on-dragmove="dragmove(eventName, eventObject)"
 	        swing-on-dragend="dragend(eventName, eventObject)"
 	        swing-on-throwout="remove($index)"
@@ -16,6 +20,19 @@
 	        <div class="image" style="background-image: url(http://placehold.it/1000x900); height: 70%"></div>
 	        <p class="body">{{ question.question }}</p>
 	    </li>
-	    <div class="stack-end"><span class="label">:( No more questions waiting for you to answer</span></div>
+	    <div class="stack-end" ng-show="!topQn">
+	    	<span class="label">:( No more questions waiting for you to answer</span>
+	    	<a href="/#/create">
+	    		<button class="btn btn-positive">
+				  <span class="icon icon-plus"></span>
+				  Add question
+				</button>
+	    	</a>
+	    </div>
 	</ul>
+
+	<div style="width:100%; text-align:center" ng-show="topQn">
+		<button class="btn btn-negative" style="display:inline-block" ng-click="report(topQn);">Report</button>
+		<button class="btn" style="display:inline-block" ng-click="skip(topQn);">Skip</button>
+	</div>
 </div>

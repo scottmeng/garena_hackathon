@@ -3,11 +3,16 @@ from models import AnswerHistory
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'email')
 
 class QuestionSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
     class Meta:
         model = Question
-        fields = ('question', 'left', 'right', 'left_count', 'right_count', 'create_time' , 'url')
+        fields = ('id', 'user', 'question', 'left', 'right', 'left_count', 'right_count', 'create_time', 'url')
 
 class QuestionCreateSerializer(serializers.ModelSerializer):
     class Meta:
@@ -21,10 +26,6 @@ class AnswerHistorySerializer(serializers.ModelSerializer):
         model = AnswerHistory
         fields = ('user', 'question', 'answer')
 
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ('username', 'first_name', 'last_name', 'email')
 
 class AnswerHistoryCreateSerializer(serializers.ModelSerializer):
     class Meta:
