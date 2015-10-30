@@ -78,6 +78,35 @@ app.controller('MeController', function($scope) {
 
 });
 
-app.controller('NewQuestionController', function($scope) {
+app.controller('NewQuestionController', function($scope, $http) {
+	$scope.question = {};
+	$scope.error = '';
 
+	$scope.uploadQuestion = function(body, left, right) {
+		$scope.error = '';
+		if (!body || body.trim() === '') {
+			$scope.error = 'Question body cannot be empty';
+			return;
+		}
+		if (!left || left.trim() === '') {
+			$scope.error = 'Left answer cannot be empty';
+			return;
+		}
+		if (!right || right.trim() === '') {
+			$scope.error = 'Right answer cannot be empty';
+			return;
+		}
+		var question = {
+			question: body.trim(),
+			left: left.trim(),
+			right: right.trim()
+		};
+		console.log(question);
+		$http.post('http://localhost:8000/questions/', question)
+			.then(function(resp) {
+				console.log(resp);
+			}, function(resp) {
+				console.log(resp);
+			});
+	};
 });

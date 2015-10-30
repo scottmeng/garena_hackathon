@@ -1,15 +1,16 @@
 <form class="input-group" style="padding: 10px">
+  <p style="color:#B00" ng-show="error">{{error}}</p>
   <div class="input-row">
     <label>Question</label>
-    <input type="text" placeholder="What's in your mind?">
+    <input type="text" placeholder="What's in your mind?" ng-model="body">
   </div>
   <div class="input-row">
     <label>Left</label>
-    <input type="email" placeholder="No">
+    <input type="text" placeholder="No" ng-model="left">
   </div>
   <div class="input-row">
     <label>Right</label>
-    <input type="text" placeholder="Yes">
+    <input type="text" placeholder="Yes" ng-model="right">
   </div>
-  <button class="btn btn-positive btn-block">Choose existing</button>
+  <button class="btn btn-positive btn-block" ng-click="uploadQuestion(body, left, right);">Ask others</button>
 </form>
