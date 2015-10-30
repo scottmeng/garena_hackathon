@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+SITE_ID = 1
 
 # Application definition
 
@@ -84,6 +85,20 @@ LOGIN_URL = '/login/facebook'
 LOGIN_REDIRECT_URL = '/admin/'
 SOCIAL_AUTH_FACEBOOK_KEY='992970364092318'
 SOCIAL_AUTH_FACEBOOK_SECRET='41d945b65331df1bb86eddf611c2ae24'
+
+SOCIAL_AUTH_PIPELINE = (
+    'social.pipeline.social_auth.social_details',
+    'social.pipeline.social_auth.social_uid',
+    'social.pipeline.social_auth.auth_allowed',
+    'social.pipeline.social_auth.social_user',
+    'social.pipeline.user.get_username',
+    'social.pipeline.social_auth.associate_by_email',  # <--- enable this one
+    'social.pipeline.user.create_user',
+    'social.pipeline.social_auth.associate_user',
+    'social.pipeline.social_auth.load_extra_data',
+    'social.pipeline.user.user_details',
+)
+
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
