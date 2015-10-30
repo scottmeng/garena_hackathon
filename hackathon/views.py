@@ -44,7 +44,6 @@ def logout(request):
 
 @login_required()
 @csrf_exempt
-@api_view(['GET', 'POST'])
 def questions_list(request):
     if request.method == 'GET':
         my_answers = models.AnswerHistory.objects.filter(user_id=request.user.id)
@@ -56,6 +55,7 @@ def questions_list(request):
 
     if request.method == 'POST':
         data = JSONParser().parse(request)
+        data['user'] = request.user.id
         serializer = QuestionCreateSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
@@ -64,7 +64,6 @@ def questions_list(request):
 
 @login_required()
 @csrf_exempt
-@api_view(['POST', 'DELETE'])
 def questions_edit(request,pk):
     try:
         question = models.Question.objects.get(pk=pk)
@@ -73,6 +72,7 @@ def questions_edit(request,pk):
 
     if request.method == 'POST':
         data = JSONParser().parse(request)
+        data['user_id'] = request.user.id
         serializer = QuestionCreateSerializer(question, data=data)
         if serializer.is_valid():
             serializer.save()
@@ -85,7 +85,6 @@ def questions_edit(request,pk):
 
 @login_required()
 @csrf_exempt
-@api_view(['GET'])
 def my_questions(request):
     if request.method == 'GET':
         questions = models.Question.objects.filter(user_id=request.use.id
@@ -95,7 +94,6 @@ def my_questions(request):
 
 @login_required()
 @csrf_exempt
-@api_view(['GET'])
 def user(request):
     if request.method == 'GET':
         try:
@@ -108,7 +106,6 @@ def user(request):
 
 @csrf_exempt
 @login_required(login_url='/login/')
-@api_view(['GET'])
 def answers_list(request):
     if request.method == 'GET':
         answers = AnswerHistory.objects.filter(user=request.user)
@@ -117,7 +114,6 @@ def answers_list(request):
 
 @csrf_exempt
 @login_required(login_url='/login/')
-@api_view(['POST'])
 def answers(request, question_id):
     if(request.method == 'POST'):
         print question_id
