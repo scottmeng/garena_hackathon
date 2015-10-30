@@ -1,1 +1,19 @@
-<h1>hi {{ user.name }}</h1>
+<div id="viewport">
+	<ul class="stack" swing-stack swing-options="options">
+	    <li
+	        swing-card
+	        swing-on-throwoutleft="throwoutleft(eventName, eventObject)"
+	        swing-on-throwoutright="throwoutright(eventName, eventObject)"
+	        swing-on-dragstart="dragstart(eventName, eventObject)"
+	        swing-on-dragmove="dragmove(eventName, eventObject)"
+	        swing-on-dragend="dragend(eventName, eventObject)"
+	        swing-on-throwout="remove($index, eventObject)"
+	        class="question-card"
+	        ng-repeat="card in cards"
+	        ng-show="!card.answered">
+	        <div class="image" style="background-image: url(http://placehold.it/1000x900); height: 70%"></div>
+	        <p class="body">{{ card.body }}</p>
+	    </li>
+	    <div class="stack-end"><span class="label">:( No more questions waiting for you to answer</span></div>
+	</ul>
+</div>

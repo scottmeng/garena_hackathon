@@ -2,15 +2,25 @@
 <html lang="en" ng-app="LoR">
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <title>My HTML File</title>
-  <link rel="stylesheet" href="/static/bower_components/bootstrap/dist/css/bootstrap.css">
-  <script src="/static/bower_components/angular/angular.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="/static/vendor/ratchet/css/ratchet.css">
+  <link rel="stylesheet" type="text/css" href="/static/vendor/angular-swing/card-stack.css">
+  <link rel="stylesheet" type="text/css" href="/static/styles/app.css">
+  <script src="/static/bower_components/angular/angular.js"></script>
   <script type="text/javascript" src="/static/bower_components/angular-route/angular-route.min.js"></script>
+  <script type="text/javascript" src="/static/vendor/angular-swing/angular-swing.js"></script>
   <script type="text/javascript" src="/static/app.js"></script>
 </head>
 <body>
-<div class="container">
-	<div ng-view></div>
+<div class="container" style="background:#999">
+  <header class="bar bar-nav">
+    <h1 class="title">Left or Right</h1>
+    <a class="icon pull-right"><div class="circular-img" style="background-image: url(http://three.org/ippolito/writing/learning_from_mario/uploaded/uploaded_345/real_mario_sma.jpg); width:25px; height:25px"></div></a>
+  </header>
+  <div ng-view class="content" style="background:#999"></div>
 </div>
     home
     <a href="/logout">Logout</a>
