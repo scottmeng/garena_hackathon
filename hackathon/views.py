@@ -13,6 +13,7 @@ from hackathon.models import AnswerHistory
 from hackathon.serializer import QuestionSerializer
 from django.contrib.auth.models import User
 from django.db.models import F
+import operator
 
 class JSONResponse(HttpResponse):
     """
@@ -98,16 +99,18 @@ def my_questions(request):
 
 
 def get_best_match_questions(questions, keyword, n):
-    print 111
     ques_dict = {}
     keys = keyword.split(' ')
     for question in questions:
         same_num = 0
         for key in keys:
-            if question.question.find(key):
+            if question.question.lower().find(key.lower()) > 0:
                 same_num += 1
         ques_dict[question] = same_num
-    return questions
+    sorted_x = sorted(ques_dict.items(), key=operator.itemgetter(1), reverse=True)
+    res_dict = sorted_x[:n]
+    result = [res[0] for res in res_dict]
+    return result
 
 
 @login_required(login_url='/login/')
@@ -116,9 +119,11 @@ def questions_search(request):
     if request.method == 'POST':
         data = JSONParser().parse(request)
         keywords = data['keywords']
+        num = 3
+        if 'number' in data:
+            num = data['number']
         questions = models.Question.objects.all()
-        questions = get_best_match_questions(questions, keywords, 1)
-        print questions
+        questions = get_best_match_questions(questions, keywords, num)
         serializer = QuestionSerializer(questions, many=True)
         return JSONResponse(serializer.data)
 
