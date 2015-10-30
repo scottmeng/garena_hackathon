@@ -9,14 +9,10 @@ def pDB():
     q.save()
     a = AnswerHistory(1, user.pk, q.pk, AnswerHistory.LEFT)
     a.save()
-    a = AnswerHistory(2, user.pk, q.pk, AnswerHistory.RIGHT)
-    a.save()
 
     q = Question(2, "is Burning the best in DOTA2", user.pk, "yes", "no", create_time="2015-11-11")
     q.save()
     a = AnswerHistory(3, user.pk, q.pk, AnswerHistory.LEFT)
-    a.save()
-    a = AnswerHistory(4, user.pk, q.pk, AnswerHistory.RIGHT)
     a.save()
 
 if __name__ == "__main__":

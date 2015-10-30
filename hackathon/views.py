@@ -92,16 +92,16 @@ def my_questions(request):
         serializer = QuestionSerializer(questions, many=True)
         return JSONResponse(serializer.data)
 
+@csrf_exempt
 @login_required(login_url='/login/')
 @api_view(['GET'])
 def answers_list(request):
     if request.method == 'GET':
         answers = AnswerHistory.objects.filter(user=request.user)
-        #serializer = AnswerSerializer(answers, many=True)
-        print answers
-        #return JSONResponse(serializer.data)
+        serializer = AnswerHistorySerializer(answers, many=True)
+        return JSONResponse(serializer.data)
 
-
+@csrf_exempt
 @login_required(login_url='/login/')
 @api_view(['POST'])
 def answers(request, question_id):
