@@ -17,6 +17,8 @@ class QuestionCreateSerializer(serializers.ModelSerializer):
         fields = ('question', 'left', 'right')
 
 class AnswerHistorySerializer(serializers.ModelSerializer):
+    question = QuestionSerializer()
+
     class Meta:
         model = AnswerHistory
         fields = ('user', 'question', 'answer')
