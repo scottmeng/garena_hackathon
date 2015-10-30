@@ -16,14 +16,28 @@
 </head>
 <body>
 <div class="container">
-  <header class="bar bar-nav" ng-controller="HeaderController">
+  <header class="bar bar-nav" ng-controller="HeaderController" ng-show="headerState.isHeaderVisible;">
     <a class="icon pull-left" style="padding: 0px">
       <span style="height: 40px; font-size:12px"><img src="http://three.org/ippolito/writing/learning_from_mario/uploaded/uploaded_345/real_mario_sma.jpg" class="circular-img" style="height: 40px; width: 40px"></span>
       {{ user.first_name }} {{ user.last_name }}
     </a>
     <a class="icon icon-compose pull-right" href="/#/create"></a>
   </header>
-  <div ng-view class="content" style="background:#999"></div>
+  <div ng-view class="content"></div>
+  <nav class="bar bar-tab" ng-controller="TabController" ng-show="tabState.isTabVisible;">
+    <a class="tab-item" href="/#/me">
+      <span class="icon icon-person"></span>
+      <span class="tab-label">Unique Me</span>
+    </a>
+    <a class="tab-item" href="/#/my-questions">
+      <span class="icon icon-star-filled"></span>
+      <span class="tab-label">My Questions</span>
+    </a>
+    <a class="tab-item" href="/#/my-answers">
+      <span class="icon icon-list"></span>
+      <span class="tab-label">My Answers</span>
+    </a>
+  </nav>
 </div>
 </body>
 </html>

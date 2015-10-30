@@ -20,8 +20,45 @@ app.config(function($routeProvider) {
 	});
 });
 
-app.controller('HeaderController', function($scope, $http) {
+app.factory('HeaderState', function() {
+	var HeaderState = {
+		isHeaderVisible: true,
+		test: false
+	};
+	return {
+		getHeaderState: function() {
+			return HeaderState;
+		},
+		setHeaderVisible: function(visible) {
+			HeaderState.isHeaderVisible = visible;
+		}
+	};
+});
+
+app.factory('TabState', function() {
+	var TabState = {
+		isTabVisible: true,
+		selectedTabIndex: 0
+	};
+
+	return {
+		getTabState: function() {
+			return TabState;
+		},
+		setTabVisible: function(visible) {
+			TabState.isTabVisible = visible;
+		},
+		setTabSelection: function(tabIndex) {
+			TabState.selectedTabIndex = tabIndex;
+		}
+	};
+});
+
+app.controller('HeaderController', function($scope, $http, HeaderState) {
 	$scope.user = {};
+	$scope.headerState = HeaderState.getHeaderState();
+	console.log($scope.headerState);
+
 	var init = function() {
 		$http.get('http://localhost:8000/me')
 			.then(function(resp) {
@@ -32,7 +69,16 @@ app.controller('HeaderController', function($scope, $http) {
 	init();
 });
 
-app.controller('HomeController', function($scope) {
+app.controller('TabController', function($scope, TabState) {
+	$scope.tabState = TabState.getTabState();
+	console.log($scope.tabState);
+});
+
+app.controller('HomeController', function($scope, HeaderState) {
+	var init = function() {
+		HeaderState.setHeaderVisible(true);
+	};
+
 	$scope.user = {
 		name: 'test'
 	};
@@ -72,15 +118,25 @@ app.controller('HomeController', function($scope) {
             return throwOutConfidence === 1;
         }
     };
+
+    init();
 });
 
 app.controller('MeController', function($scope) {
 
 });
 
-app.controller('NewQuestionController', function($scope, $http) {
+app.controller('NewQuestionController', function($scope, $http, $location, HeaderState) {
+	var init = function() {
+		HeaderState.setHeaderVisible(false);
+	};
+
 	$scope.question = {};
 	$scope.error = '';
+
+	$scope.goBack = function() {
+		$location.path('/#/');
+	};
 
 	$scope.uploadQuestion = function(body, left, right) {
 		$scope.error = '';
@@ -109,4 +165,6 @@ app.controller('NewQuestionController', function($scope, $http) {
 				console.log(resp);
 			});
 	};
+
+	init();
 });
