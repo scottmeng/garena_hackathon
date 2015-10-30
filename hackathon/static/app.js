@@ -57,7 +57,6 @@ app.factory('TabState', function() {
 app.controller('HeaderController', function($scope, $http, HeaderState) {
 	$scope.user = {};
 	$scope.headerState = HeaderState.getHeaderState();
-	console.log($scope.headerState);
 
 	var init = function() {
 		$http.get('http://localhost:8000/me')
@@ -71,16 +70,22 @@ app.controller('HeaderController', function($scope, $http, HeaderState) {
 
 app.controller('TabController', function($scope, TabState) {
 	$scope.tabState = TabState.getTabState();
-	console.log($scope.tabState);
 });
 
-app.controller('HomeController', function($scope, HeaderState) {
+app.controller('HomeController', function($scope, $http, HeaderState) {
+	$scope.questions = [];
+	$scope.curQuestion = null;
+
 	var init = function() {
 		HeaderState.setHeaderVisible(true);
-	};
 
-	$scope.user = {
-		name: 'test'
+		$http.get('http://localhost:8000/questions')
+			.then(function(resp) {
+				$scope.questions = resp.data;
+				$scope.curQuestion = $scope.questions[$scope.questions.length - 1];
+			}, function(resp) {
+				console.log(resp);
+			});
 	};
 
 	$scope.cards = [{
@@ -94,8 +99,11 @@ app.controller('HomeController', function($scope, HeaderState) {
 			answered: false
 		}];
 
-	$scope.remove = function(index, obj) {
-		console.log($scope.cards[index]);
+	$scope.remove = function(index) {
+		$scope.questions.splice(index, 1);
+		$scope.curQuestion = $scope.questions[$scope.questions.length - 1];
+
+		console.log($scope.curQuestion);
 		x = document.getElementsByClassName("question-card");
 		x[x.length - 1].style.visibility='hidden';
 	};

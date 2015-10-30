@@ -1,4 +1,7 @@
 <div id="viewport">
+	<div style="height:100px; width:20%; background: #777; float: left" ng-if="curQuestion">{{ curQuestion.left }}</div>
+	<div style="height:100px; width:20%; background: #777; float: right" ng-if="curQuestion">{{ curQuestion.right }}</div>
+
 	<ul class="stack" swing-stack swing-options="options">
 	    <li
 	        swing-card
@@ -7,11 +10,11 @@
 	        swing-on-dragstart="dragstart(eventName, eventObject)"
 	        swing-on-dragmove="dragmove(eventName, eventObject)"
 	        swing-on-dragend="dragend(eventName, eventObject)"
-	        swing-on-throwout="remove($index, eventObject)"
+	        swing-on-throwout="remove($index)"
 	        class="question-card"
-	        ng-repeat="card in cards">
+	        ng-repeat="question in questions">
 	        <div class="image" style="background-image: url(http://placehold.it/1000x900); height: 70%"></div>
-	        <p class="body">{{ card.body }}</p>
+	        <p class="body">{{ question.question }}</p>
 	    </li>
 	    <div class="stack-end"><span class="label">:( No more questions waiting for you to answer</span></div>
 	</ul>
