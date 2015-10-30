@@ -4,16 +4,11 @@ from django.template import RequestContext
 from django.http import HttpResponse
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
-from rest_framework import status
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout as auth_logout
 from django.views.decorators.csrf import csrf_exempt
 from hackathon import models
 from hackathon.serializer import *
-from rest_framework.decorators import api_view
-from django.db.models import F
 from hackathon.models import AnswerHistory
 from hackathon.serializer import QuestionSerializer
 from django.contrib.auth.models import User
@@ -50,6 +45,7 @@ def questions_list(request):
         my_answers_id = list(x.question_id for x in my_answers)
         questions = models.Question.objects.exclude(id__in=my_answers_id
                                                     ).order_by('-create_time')[:10]
+        questions.update(view_count=F('view_count')+1)
         serializer = QuestionSerializer(questions, many=True)
         return JSONResponse(serializer.data)
 
@@ -121,11 +117,25 @@ def answers(request, question_id):
         return HttpResponse(status=404)
 
     if request.method == 'POST':
+        hasAnswer = AnswerHistory.objects.get(user_id=request.user.pk, question_id=question.pk)
+        if hasAnswer:
+            result = {'isExist':1}
+            return JSONResponse(result)
         data = JSONParser().parse(request)
         data['user'] = request.user.pk
         data['question'] = question.pk
         serializer = AnswerHistoryCreateSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
+            ans = data['answer']
+            if ans == AnswerHistory.LEFT:
+                question.left_count += 1
+            elif ans == AnswerHistory.RIGHT:
+                question.right_count += 1
+            elif ans == AnswerHistory.SKIP:
+                question.skip_count += 1
+            elif ans == AnswerHistory.REPORT:
+                question.report_count += 1
+            question.save()
             return JSONResponse(serializer.data)
         return JSONResponse(serializer.errors, status=400)
