@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -5,8 +6,10 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 class User_Profile(models.Model):
+    GENDERS = (('male', 'Male'),('female','Female'))
     user = models.OneToOneField(User,primary_key=True)
     avatar = models.CharField(max_length=1024)
+    gender = models.CharField(max_length=20, null=True, blank=True, choices=GENDERS)
     class Meta:
         db_table = 'user_profile'
 
