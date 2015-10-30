@@ -50,6 +50,7 @@ def questions_list(request):
         my_answers_id = list(x.question_id for x in my_answers)
         questions = models.Question.objects.exclude(id__in=my_answers_id
                                                     ).order_by('-create_time')[:10]
+        questions.update(view_count=F('view_count')+1)
         serializer = QuestionSerializer(questions, many=True)
         return JSONResponse(serializer.data)
 
