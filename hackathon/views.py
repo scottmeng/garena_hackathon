@@ -16,9 +16,10 @@ from django.db.models import F
 import operator
 from django.db import transaction
 from urllib import FancyURLopener
-import urllib2
 import json
 import re
+from urllib import urlencode
+import urllib2
 
 class JSONResponse(HttpResponse):
     """
@@ -80,10 +81,11 @@ class MyOpener(FancyURLopener):
 
 def fetch_related_image(question):
     searchTerm = question
-    searchTerm = re.sub('[^0-9a-zA-Z]+', ' ', searchTerm)
     searchTerm = searchTerm.replace(' ','%20')
-
-    url = ('https://ajax.googleapis.com/ajax/services/search/images?' + 'v=1.0&q='+searchTerm+'&start=0&userip=MyIP')
+    print(searchTerm)
+    params = {'v': '1.0', 'q': searchTerm.encode('utf8'), 'start': 0, 'userip': 'MyIP'}
+    params = urlencode(params)
+    url = ('https://ajax.googleapis.com/ajax/services/search/images?' + params)
     request = urllib2.Request(url, None, {'Referer': 'testing'})
     response = urllib2.urlopen(request)
 
@@ -92,6 +94,7 @@ def fetch_related_image(question):
     dataInfo = data['results']
 
     for myUrl in dataInfo:
+        print(myUrl['unescapedUrl'])
         return myUrl['unescapedUrl']
 
 @login_required(login_url='/login/')
