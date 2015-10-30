@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response,get_object_or_404
 from django.template import RequestContext
 from django.http import HttpResponse
 from rest_framework.renderers import JSONRenderer
@@ -115,10 +115,20 @@ def answers_list(request):
         serializer = AnswerHistorySerializer(answers, many=True)
         return JSONResponse(serializer.data)
 
-@csrf_exempt
 @login_required(login_url='/login/')
-@api_view(['POST'])
+@csrf_exempt
 def answers(request, question_id):
-    if(request.method == 'POST'):
-        print question_id
+    try:
+        question = models.Question.objects.get(pk=question_id)
+    except models.Question.DoesNotExist:
+        return HttpResponse(status=404)
 
+    if request.method == 'POST':
+        data = JSONParser().parse(request)
+        data['user'] = request.user.pk
+        data['question'] = question.pk
+        serializer = AnswerHistoryCreateSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JSONResponse(serializer.data)
+        return JSONResponse(serializer.errors, status=400)
