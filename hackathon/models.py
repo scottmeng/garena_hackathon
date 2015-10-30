@@ -25,6 +25,7 @@ class Question(models.Model):
 
 class AnswerHistory(models.Model):
     user = models.ForeignKey(User, on_delete=models.PROTECT)
+    question = models.ForeignKey(Question, on_delete=models.PROTECT)
     answer = models.ForeignKey(Answer, on_delete=models.PROTECT)
     enable = models.BooleanField(default=True)
     class Meta:
