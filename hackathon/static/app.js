@@ -14,7 +14,22 @@ app.config(function($routeProvider) {
 	.when('/create', {
 		controller: 'NewQuestionController',
 		templateUrl: '/static/views/newQuestion.html'
+	})
+	.otherwise({
+		redirectTo: '/'
 	});
+});
+
+app.controller('HeaderController', function($scope, $http) {
+	$scope.user = {};
+	var init = function() {
+		$http.get('http://localhost:8000/me')
+			.then(function(resp) {
+				$scope.user = resp.data;
+			});
+	};
+
+	init();
 });
 
 app.controller('HomeController', function($scope) {
