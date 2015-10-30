@@ -14,6 +14,7 @@ from hackathon.serializer import QuestionSerializer
 from django.contrib.auth.models import User
 from django.db.models import F
 import operator
+from django.db import transaction
 
 class JSONResponse(HttpResponse):
     """
@@ -41,11 +42,13 @@ def logout(request):
 
 @login_required(login_url='/login/')
 @csrf_exempt
+@transaction.atomic
 def questions_list(request):
     if request.method == 'GET':
         my_answers = models.AnswerHistory.objects.filter(user_id=request.user.id)
         my_answers_id = list(x.question_id for x in my_answers)
-        questions = models.Question.objects.select_for_update().exclude(id__in=my_answers_id
+
+        questions = models.Question.objects.exclude(id__in=my_answers_id
                                                     ).order_by('-create_time')
         questions_id = []
         for question in questions:
@@ -130,6 +133,8 @@ def questions_search(request):
 @login_required()
 @csrf_exempt
 def user(request):
+
+
     if request.method == 'GET':
         try:
             user = User.objects.get(id=request.user.id)
