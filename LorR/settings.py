@@ -37,8 +37,13 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'social.apps.django_app.default'
+)
 
-    'rest_framework'
+AUTHENTICATION_BACKENDS = (
+    'social.backends.facebook.FacebookOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -66,14 +71,18 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social.apps.django_app.context_processors.backends',
+                'social.apps.django_app.context_processors.login_redirect',
             ],
         },
     },
 ]
 
 WSGI_APPLICATION = 'LorR.wsgi.application'
-
-
+LOGIN_URL = '/login/facebook'
+LOGIN_REDIRECT_URL = '/admin/'
+SOCIAL_AUTH_FACEBOOK_KEY='992970364092318'
+SOCIAL_AUTH_FACEBOOK_SECRET='41d945b65331df1bb86eddf611c2ae24'
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
