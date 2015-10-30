@@ -50,8 +50,8 @@ app.controller('HomeController', function($scope) {
 
 	$scope.remove = function(index, obj) {
 		console.log($scope.cards[index]);
-		$scope.cards[index].answered = true;
-        $scope.cards.splice(index, 1);
+		x = document.getElementsByClassName("question-card");
+		x[x.length - 1].style.visibility='hidden';
 	};
 
 	$scope.throwoutleft = function(event, obj) {
@@ -68,7 +68,7 @@ app.controller('HomeController', function($scope) {
             return Math.min(Math.abs(offset) / 160, 1);
         },
         isThrowOut: function (offset, elementWidth, throwOutConfidence) {
-            console.log('isThrowOut', offset, elementWidth, throwOutConfidence);
+            //console.log('isThrowOut', offset, elementWidth, throwOutConfidence);
             return throwOutConfidence === 1;
         }
     };
