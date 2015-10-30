@@ -130,7 +130,7 @@ def user(request):
             user = User.objects.get(id=request.user.id)
             serializer = UserSerializer(user)
             mydata = serializer.data
-            user_profile = models.User_Profile.objects.get(id=user.pk)
+            user_profile = models.User_Profile.objects.get(user_id=user.pk)
             mydata['avatar'] = '/avatar/{0}_social.jpg'.format(user.pk)
             return JSONResponse(mydata)
         except models.User.DoesNotExist:
