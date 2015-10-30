@@ -2,6 +2,15 @@
 
 var app = angular.module('LoR', ['ngRoute', 'gajus.swing']);
 
+app.constant('VAL_ANW', function() {
+	return {
+		ANW_LEFT: 1,
+		ANW_RIGHT: 2,
+		ANW_SKIP: 3,
+		ANW_REPORT: 4
+	};
+});
+
 app.config(function($routeProvider) {
 	$routeProvider.when('/', {
 		controller: 'HomeController',
@@ -79,11 +88,12 @@ app.controller('TabController', function($scope, TabState) {
 	$scope.tabState = TabState.getTabState();
 });
 
-app.controller('HomeController', function($scope, $http, HeaderState, TabState) {
+app.controller('HomeController', function($scope, $http, HeaderState, TabState, VAL_ANW) {
 	$scope.questions = [];
 	$scope.topQn = null;
 	$scope.leftProx = 0;
 	$scope.rightProx = 0;
+	$scope.error = null;
 
 	var init = function() {
 		HeaderState.setHeaderVisible(true);
@@ -91,7 +101,6 @@ app.controller('HomeController', function($scope, $http, HeaderState, TabState) 
 
 		$http.get('/questions')
 			.then(function(resp) {
-				console.log(resp);
 				$scope.questions = resp.data;
 				$scope.topQn = $scope.questions[$scope.questions.length - 1];
 				console.log($scope.questions);
@@ -100,18 +109,31 @@ app.controller('HomeController', function($scope, $http, HeaderState, TabState) 
 			});
 	};
 
-	$scope.remove = function(index) {
+	var updateAnswer = function(index, anw) {
+		var qn = $scope.questions[index];
 		$scope.questions.splice(index, 1);
 		$scope.topQn = $scope.questions[$scope.questions.length - 1];
 		$scope.$apply();
+
+		$http.post('/answers/' + qn.id + '/', {
+			answer: anw
+		}).then(function(resp) {}, function(resp) {
+			$scope.error = "network error! please try again later";
+			console.log('updateAnswer', 'failed to update answer');
+		});
 	};
 
 	$scope.throwoutleft = function(index, event, obj) {
-
+		updateAnswer(index, VAL_ANW.ANW_LEFT);
 	};
 
 	$scope.throwoutright = function(index, event, obj) {
+		var qn = $scope.questions[index];
+		updateAnswer(index, VAL_ANW.ANW_RIGHT);
+	};
 
+	$scope.dragstart = function(event, obj) {
+		$scope.error = null;
 	};
 
 	$scope.dragmove = function(event, obj) {
@@ -138,11 +160,13 @@ app.controller('HomeController', function($scope, $http, HeaderState, TabState) 
 	};
 
 	$scope.skip = function(qn) {
-
+		var index = $scope.questions.indexOf(qn);
+		updateAnswer(index, VAL_ANW.ANW_SKIP);
 	};
 
 	$scope.report = function(qn) {
-
+		var index = $scope.questions.indexOf(qn);
+		updateAnswer(qn.id, VAL_ANW.ANW_SKIP);
 	};
 
     $scope.options = {

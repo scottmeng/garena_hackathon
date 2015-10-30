@@ -11,13 +11,13 @@
 	        swing-card
 	        swing-on-throwoutleft="throwoutleft($index, eventName, eventObject)"
 	        swing-on-throwoutright="throwoutright($index, eventName, eventObject)"
-	        swing-on-dragstart="dragstart($index, eventName, eventObject)"
+	        swing-on-dragstart="dragstart(eventName, eventObject)"
 	        swing-on-dragmove="dragmove(eventName, eventObject)"
 	        swing-on-dragend="dragend(eventName, eventObject)"
-	        swing-on-throwout="remove($index)"
 	        class="question-card"
 	        ng-repeat="question in questions">
-	        <div class="image" style="background-image: url(http://placehold.it/1000x900); height: 70%"></div>
+	        <div class="image" ng-style="{'background-image':'url('+question.url+')'}"></div>
+	        <!-- <img ng-src="{{ question.url }}" style="width:100%"> -->
 	        <p class="body">{{ question.question }}</p>
 	    </li>
 	    <div class="stack-end" ng-show="!topQn">
