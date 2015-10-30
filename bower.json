@@ -1,0 +1,24 @@
+{
+  "name": "Left or Right",
+  "version": "0.1.0",
+  "homepage": "https://github.com/scottmeng/garena_hackathon",
+  "authors": [
+    "Kaizhi <mengk@garena.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.4.7",
+    "angular-route": "~1.4.7",
+    "bootstrap": "~3.3.5"
+  }
+}

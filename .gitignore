@@ -3,3 +3,4 @@
 .idea/
 *.sqlite3
 hackathon/migrations/
+bower_components
