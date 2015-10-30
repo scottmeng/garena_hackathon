@@ -160,8 +160,6 @@ def questions_search(request):
 @login_required()
 @csrf_exempt
 def user(request):
-
-
     if request.method == 'GET':
         try:
             user = User.objects.get(id=request.user.id)
@@ -191,8 +189,8 @@ def answers(request, question_id):
         return HttpResponse(status=404)
 
     if request.method == 'POST':
-        hasAnswer = AnswerHistory.objects.get(user_id=request.user.pk, question_id=question.pk)
-        if hasAnswer:
+        hasAnswers = AnswerHistory.objects.filter(user_id=request.user.pk, question_id=question.pk)
+        if hasAnswers:
             result = {'isExist':1}
             return JSONResponse(result)
         data = JSONParser().parse(request)
