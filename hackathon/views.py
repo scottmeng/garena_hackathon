@@ -12,6 +12,7 @@ from hackathon.serializer import *
 from hackathon.models import AnswerHistory
 from hackathon.serializer import QuestionSerializer
 from django.contrib.auth.models import User
+from django.db.models import F
 
 class JSONResponse(HttpResponse):
     """
@@ -43,9 +44,16 @@ def questions_list(request):
     if request.method == 'GET':
         my_answers = models.AnswerHistory.objects.filter(user_id=request.user.id)
         my_answers_id = list(x.question_id for x in my_answers)
-        questions = models.Question.objects.exclude(id__in=my_answers_id
-                                                    ).order_by('-create_time')[:10]
-        questions.update(view_count=F('view_count')+1)
+        questions = models.Question.objects.select_for_update().exclude(id__in=my_answers_id
+                                                    ).order_by('-create_time')
+        questions_id = []
+        for question in questions:
+            questions_id.append(question.id)
+            question.view_count = question.view_count + 1
+            question.save()
+            if len(questions_id) >= 10:
+                break
+        questions = models.Question.objects.filter(id__in=questions_id)
         serializer = QuestionSerializer(questions, many=True)
         return JSONResponse(serializer.data)
 
