@@ -38,7 +38,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'social.apps.django_app.default'
+    'social.apps.django_app.default',
+    'hackathon',
 )
 
 AUTHENTICATION_BACKENDS = (
@@ -88,10 +89,11 @@ SOCIAL_AUTH_FACEBOOK_SECRET='41d945b65331df1bb86eddf611c2ae24'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'hackathon',
     }
 }
+
 
 
 # Internationalization
@@ -99,7 +101,7 @@ DATABASES = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Singapore'
 
 USE_I18N = True
 
