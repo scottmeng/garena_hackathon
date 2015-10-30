@@ -6,12 +6,14 @@ from django.contrib.auth.models import User
 
 class Question(models.Model):
     question = models.CharField(max_length=2555)
+    user = models.ForeignKey(User, on_delete=models.PROTECT)
     left = models.CharField(max_length=128)
     right = models.CharField(max_length=128)
     view_count = models.PositiveIntegerField(default=0)
     answer_count = models.PositiveIntegerField(default=0)
     report_count = models.PositiveIntegerField(default=0)
     skip_count = models.PositiveIntegerField(default=0)
+    url =  models.URLField(max_length=512, null=True)
     create_time = models.DateTimeField(auto_now_add=True)
     enable = models.BooleanField(default=True)
     class Meta:
@@ -36,3 +38,4 @@ class AnswerHistory(models.Model):
     
     class Meta:
         db_table = 'answer_history_tab'
+        unique_together = ('user','question')
