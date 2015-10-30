@@ -1,20 +1,4 @@
-import json
-import os
-import decimal
-from decimal import Decimal
-import logging
-from datetime import timedelta
 from django.core.management.base import BaseCommand
-from django.core.mail import EmailMessage
-from django.db.models import Sum
-from django.utils.timezone import now, localtime
-from django.forms import fields
-from django.db.models import Q
-from django.db.models import F
-from django.db import transaction
-import os
-import sys
-import time
 from urllib import FancyURLopener
 import urllib2
 import json
@@ -23,7 +7,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         # Define search term
-        searchTerm = "hello world"
+        searchTerm = "holy shit"
 
         # Replace spaces ' ' in search term for '%20' in order to comply with request
         searchTerm = searchTerm.replace(' ','%20')
@@ -53,5 +37,3 @@ class Command(BaseCommand):
             for myUrl in dataInfo:
                 count = count + 1
                 print myUrl['unescapedUrl']
-
-                myopener.retrieve(myUrl['unescapedUrl'],str(count)+'.jpg')

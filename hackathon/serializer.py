@@ -7,12 +7,12 @@ from rest_framework import serializers
 class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
-        fields = ('question', 'left', 'right', 'left_count', 'right_count', 'create_time')
+        fields = ('question', 'left', 'right', 'left_count', 'right_count', 'create_time' , 'url')
 
 class QuestionCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
-        fields = ('user', 'question', 'left', 'right')
+        fields = ('user', 'question', 'left', 'right', 'url')
 
 class AnswerHistorySerializer(serializers.ModelSerializer):
     question = QuestionSerializer()
