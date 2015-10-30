@@ -5,10 +5,10 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 class User_Profile(models.Model):
-    id = models.IntegerField(primary_key=True)
+    user = models.OneToOneField(User,primary_key=True)
     avatar = models.CharField(max_length=1024)
     class Meta:
-        db_table = 'auth_user'
+        db_table = 'user_profile'
 
 
 class Question(models.Model):
