@@ -12,6 +12,7 @@ class Question(models.Model):
     answer_count = models.PositiveIntegerField(default=0)
     report_count = models.PositiveIntegerField(default=0)
     skip_count = models.PositiveIntegerField(default=0)
+    url =  models.URLField(max_length=512, null=True)
     create_time = models.DateTimeField(auto_now_add=True)
     enable = models.BooleanField(default=True)
     class Meta:
@@ -36,3 +37,4 @@ class AnswerHistory(models.Model):
     
     class Meta:
         db_table = 'answer_history_tab'
+        unique_together = ('user','question')
