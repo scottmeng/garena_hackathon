@@ -104,6 +104,7 @@ SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.social_auth.associate_user',
     'social.pipeline.social_auth.load_extra_data',
     'social.pipeline.user.user_details',
+    'LorR.pipeline.save_profile_picture',
 )
 
 # Database
@@ -116,8 +117,10 @@ DATABASES = {
     }
 }
 
+ENV_PATH = os.path.abspath(os.path.dirname(__file__))
+MEDIA_ROOT = os.path.join(ENV_PATH, 'avatar/')
 
-
+MEDIA_URL = '/avatar/'
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 

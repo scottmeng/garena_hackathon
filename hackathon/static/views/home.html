@@ -9,8 +9,7 @@
 	        swing-on-dragend="dragend(eventName, eventObject)"
 	        swing-on-throwout="remove($index, eventObject)"
 	        class="question-card"
-	        ng-repeat="card in cards"
-	        ng-show="!card.answered">
+	        ng-repeat="card in cards">
 	        <div class="image" style="background-image: url(http://placehold.it/1000x900); height: 70%"></div>
 	        <p class="body">{{ card.body }}</p>
 	    </li>
