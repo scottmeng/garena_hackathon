@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 
 class Question(models.Model):
     question = models.CharField(max_length=2555)
+    user = models.ForeignKey(User, on_delete=models.PROTECT)
     left = models.CharField(max_length=128)
     right = models.CharField(max_length=128)
     view_count = models.PositiveIntegerField(default=0)
