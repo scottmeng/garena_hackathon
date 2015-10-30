@@ -21,6 +21,8 @@ import re
 from urllib import urlencode
 import urllib2
 
+HIGHLIGHT_SCORE = 0.2
+
 class JSONResponse(HttpResponse):
     """
     An HttpResponse that renders its content into JSON.
@@ -163,14 +165,43 @@ def user(request):
     if request.method == 'GET':
         try:
             user = User.objects.get(id=request.user.id)
-            serializer = UserSerializer(user)
-            mydata = serializer.data
-            user_profile = models.User_Profile.objects.get(user_id=user.pk)
-            mydata['avatar'] = '/avatar/{0}_social.jpg'.format(user.pk)
-            return JSONResponse(mydata)
         except models.User.DoesNotExist:
             return HttpResponse(status=404)
 
+        serializer = UserSerializer(user)
+        mydata = serializer.data
+        try:
+            user_profile = models.User_Profile.objects.get(user_id=user.pk)
+        except:
+            return HttpResponse(status=404)
+
+        mydata['avatar'] = '/avatar/{0}_social.jpg'.format(user.pk)
+        highlights = []
+        sum = 0.0
+        myAnswers = AnswerHistory.objects.filter(user=user)
+        for answer in myAnswers:
+            ques = answer.question
+            if answer.answer == AnswerHistory.LEFT:
+                score = ques.left_count * 1.0 / (ques.right_count + ques.left_count)
+                sum += score
+                if score < HIGHLIGHT_SCORE:
+                    highlights.append(ques)
+            elif answer.answer == AnswerHistory.RIGHT:
+                sum += ques.right_count * 1.0 / (ques.right_count + ques.left_count)
+                if score < HIGHLIGHT_SCORE:
+                    highlights.append(ques)
+
+        highlights = highlights[:5]
+        if len(highlights) > 0:
+            qSerializer = QuestionSerializer(highlights, many=True)
+            mydata['highlight'] = qSerializer.data
+
+        uniqueness = 0
+        if len(myAnswers):
+            uniqueness = 1 - sum/len(myAnswers)
+
+        mydata['uniqueness'] = uniqueness
+        return JSONResponse(mydata)
 
 @csrf_exempt
 @login_required(login_url='/login/')
