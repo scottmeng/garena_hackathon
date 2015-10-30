@@ -1,5 +1,5 @@
 .DS_Store
 *.pyc
-../*.pycf
 .idea/
 *.sqlite3
+hackathon/migrations/
