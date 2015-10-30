@@ -4,3 +4,4 @@
 *.sqlite3
 hackathon/migrations/
 bower_components
+*.jpg
