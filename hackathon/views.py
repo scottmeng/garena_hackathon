@@ -14,6 +14,11 @@ from hackathon.serializer import QuestionSerializer
 from django.contrib.auth.models import User
 from django.db.models import F
 import operator
+from django.db import transaction
+from urllib import FancyURLopener
+import urllib2
+import json
+import re
 
 class JSONResponse(HttpResponse):
     """
@@ -41,11 +46,13 @@ def logout(request):
 
 @login_required(login_url='/login/')
 @csrf_exempt
+@transaction.atomic
 def questions_list(request):
     if request.method == 'GET':
         my_answers = models.AnswerHistory.objects.filter(user_id=request.user.id)
         my_answers_id = list(x.question_id for x in my_answers)
-        questions = models.Question.objects.select_for_update().exclude(id__in=my_answers_id
+
+        questions = models.Question.objects.exclude(id__in=my_answers_id
                                                     ).order_by('-create_time')
         questions_id = []
         for question in questions:
@@ -61,11 +68,31 @@ def questions_list(request):
     if request.method == 'POST':
         data = JSONParser().parse(request)
         data['user'] = request.user.id
+        data['url'] = fetch_related_image(data['question']) or ''
         serializer = QuestionCreateSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
             return JSONResponse(serializer.data, status=201)
         return JSONResponse(serializer.errors, status=400)
+
+class MyOpener(FancyURLopener):
+    version = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; it; rv:1.8.1.11) Gecko/20071127 Firefox/2.0.0.11'
+
+def fetch_related_image(question):
+    searchTerm = question
+    searchTerm = re.sub('[^0-9a-zA-Z]+', ' ', searchTerm)
+    searchTerm = searchTerm.replace(' ','%20')
+
+    url = ('https://ajax.googleapis.com/ajax/services/search/images?' + 'v=1.0&q='+searchTerm+'&start=0&userip=MyIP')
+    request = urllib2.Request(url, None, {'Referer': 'testing'})
+    response = urllib2.urlopen(request)
+
+    results = json.load(response)
+    data = results['responseData']
+    dataInfo = data['results']
+
+    for myUrl in dataInfo:
+        return myUrl['unescapedUrl']
 
 @login_required(login_url='/login/')
 @csrf_exempt
@@ -130,6 +157,8 @@ def questions_search(request):
 @login_required()
 @csrf_exempt
 def user(request):
+
+
     if request.method == 'GET':
         try:
             user = User.objects.get(id=request.user.id)
