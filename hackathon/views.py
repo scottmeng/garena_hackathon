@@ -13,9 +13,10 @@ from django.views.decorators.csrf import csrf_exempt
 from hackathon import models
 from hackathon.serializer import *
 from rest_framework.decorators import api_view
-
+from django.db.models import F
 from hackathon.models import AnswerHistory
 from hackathon.serializer import QuestionSerializer
+from django.contrib.auth.models import User
 
 class JSONResponse(HttpResponse):
     """
@@ -91,6 +92,19 @@ def my_questions(request):
                                                    ).order_by('-create_time')[:10]
         serializer = QuestionSerializer(questions, many=True)
         return JSONResponse(serializer.data)
+
+@login_required()
+@csrf_exempt
+@api_view(['GET'])
+def user(request):
+    if request.method == 'GET':
+        try:
+            user = User.objects.get(id=request.user.id)
+            serializer = UserSerializer(user)
+            return JSONResponse(serializer.data)
+        except models.User.DoesNotExist:
+            return HttpResponse(status=404)
+
 
 @csrf_exempt
 @login_required(login_url='/login/')
