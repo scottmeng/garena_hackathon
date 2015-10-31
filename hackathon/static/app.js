@@ -119,7 +119,7 @@ app.controller('HomeController', function($scope, $rootScope, $http, HeaderState
 
 
 	var getQuestions = function() {
-		$http.get('/questions')
+		$http.get('/questions', {header : {'Content-Type':'application/json; charset=UTF-8'} })
 			.then(function(resp) {
 				$scope.questions = resp.data;
 				$scope.topQn = $scope.questions[$scope.questions.length - 1];
