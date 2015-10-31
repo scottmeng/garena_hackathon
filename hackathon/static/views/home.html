@@ -29,7 +29,7 @@
 	        ng-style="{'border-color': colors[0].border}">
 	        <div class="image" ng-style="{'background-image':'url('+question.url+')'}"></div>
 	        <!-- <img ng-src="{{ question.url }}" style="width:100%"> -->
-	        <p class="body" ng-style="{'background-color': colors[0].txtBg}">{{ question.question }}</p>
+	        <p class="body" ng-style="{'background-color': colors[0].txtBg}" style="text-align:center">{{ question.question }}</p>
 	    </li>
 	    <div class="stack-end" ng-show="!topQn">
 	    	<span class="label">No more questions waiting for you to answer</span>

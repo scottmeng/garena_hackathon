@@ -99,7 +99,7 @@ app.controller('HomeController', function($scope, $rootScope, $http, HeaderState
 		selection: '#F2635F',
 		border: '#41AAC4',
 		txtBg: '#4EBAD5',
-		bg: '#FCF4D9'
+		bg: '#F4F3EE'
 	}];
 
 	$rootScope.bgColor = $scope.colors[0].bg;
