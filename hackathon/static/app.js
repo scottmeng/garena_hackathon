@@ -2,13 +2,11 @@
 
 var app = angular.module('LoR', ['ngRoute', 'gajus.swing']);
 
-app.constant('VAL_ANW', function() {
-	return {
-		ANW_LEFT: 1,
-		ANW_RIGHT: 2,
-		ANW_SKIP: 3,
-		ANW_REPORT: 4
-	};
+app.constant('VAL_ANW', {
+	ANW_LEFT: 1,
+	ANW_RIGHT: 2,
+	ANW_SKIP: 3,
+	ANW_REPORT: 4
 });
 
 app.config(function($routeProvider) {
@@ -40,14 +38,16 @@ app.config(function($routeProvider) {
 app.factory('HeaderState', function() {
 	var HeaderState = {
 		isHeaderVisible: true,
-		test: false
+		test: false,
+		title: null
 	};
 	return {
 		getHeaderState: function() {
 			return HeaderState;
 		},
-		setHeaderVisible: function(visible) {
+		setHeaderVisible: function(visible, title) {
 			HeaderState.isHeaderVisible = visible;
+			HeaderState.title = title;
 		}
 	};
 });
@@ -96,8 +96,13 @@ app.controller('HomeController', function($scope, $http, HeaderState, TabState, 
 	$scope.error = null;
 
 	var init = function() {
-		HeaderState.setHeaderVisible(true);
+		HeaderState.setHeaderVisible(false, null);
 		TabState.setTabVisible(false);
+
+		$http.get('/me')
+			.then(function(resp) {
+				$scope.user = resp.data;
+			});
 
 		$http.get('/questions')
 			.then(function(resp) {
@@ -115,15 +120,20 @@ app.controller('HomeController', function($scope, $http, HeaderState, TabState, 
 		$scope.topQn = $scope.questions[$scope.questions.length - 1];
 		$scope.$apply();
 
-		$http.post('/answers/' + qn.id + '/', {
-			answer: anw
-		}).then(function(resp) {}, function(resp) {
+		var data = {
+			'answer': anw
+		};
+		console.log(data);
+		$http.post('/answers/' + qn.id + '/', data)
+		.then(function(resp) {}, function(resp) {
 			$scope.error = "network error! please try again later";
 			console.log('updateAnswer', 'failed to update answer');
 		});
 	};
 
 	$scope.throwoutleft = function(index, event, obj) {
+		console.log(VAL_ANW);
+		console.log
 		updateAnswer(index, VAL_ANW.ANW_LEFT);
 	};
 
@@ -182,25 +192,53 @@ app.controller('HomeController', function($scope, $http, HeaderState, TabState, 
     init();
 });
 
-app.controller('MeController', function($scope, HeaderState, TabState) {
+app.controller('MeController', function($scope, $http, HeaderState, TabState) {
 	var init = function() {
-		HeaderState.setHeaderVisible(false);
-		TabState.setTabVisible(false);
+		HeaderState.setHeaderVisible(true, 'Unique Me');
+		TabState.setTabVisible(true);
+		TabState.setTabSelection(0);
+
+		$http.get('/me')
+			.then(function(resp) {
+				$scope.user = resp.data;
+			});
 	};
 	init();
 });
 
-app.controller('MyQuestionsController', function($scope) {
+app.controller('MyQuestionsController', function($scope, $http, HeaderState, TabState) {
+	var init = function() {
+		HeaderState.setHeaderVisible(true, 'My Questions');
+		TabState.setTabVisible(true);
+		TabState.setTabSelection(1);
 
+		$http.get('/questions/me/')
+			.then(function(resp) {
+				console.log(resp);
+				$scope.questions = resp.data;
+			});
+	};
+	init();
 });
 
-app.controller('MyAnswersController', function($scope) {
+app.controller('MyAnswersController', function($scope, $http, HeaderState, TabState) {
+	var init = function() {
+		HeaderState.setHeaderVisible(true, 'My Answers');
+		TabState.setTabVisible(true);
+		TabState.setTabSelection(2);
 
+		$http.get('/answers')
+			.then(function(resp) {
+				console.log(resp);
+				$scope.answers = resp.data;
+			});
+	};
+	init();
 });
 
 app.controller('NewQuestionController', function($scope, $http, $location, HeaderState) {
 	var init = function() {
-		HeaderState.setHeaderVisible(false);
+		HeaderState.setHeaderVisible(true, 'Create Question');
 	};
 
 	$scope.question = {};
