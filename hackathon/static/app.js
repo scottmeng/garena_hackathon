@@ -133,7 +133,6 @@ app.controller('HomeController', function($scope, $rootScope, $http, HeaderState
 		var qn = $scope.questions[index];
 		$scope.questions.splice(index, 1);
 		$scope.topQn = $scope.questions[$scope.questions.length - 1];
-		$scope.$apply();
 
 		if ($scope.questions.length === 0) {
 			getQuestions();
@@ -178,7 +177,6 @@ app.controller('HomeController', function($scope, $rootScope, $http, HeaderState
 			$scope.rightProx = 0;
 			$scope.leftProx = prox;
 		}
-
 		$scope.$apply();
 	};
 
@@ -195,7 +193,7 @@ app.controller('HomeController', function($scope, $rootScope, $http, HeaderState
 
 	$scope.report = function(qn) {
 		var index = $scope.questions.indexOf(qn);
-		updateAnswer(qn.id, VAL_ANW.ANW_SKIP);
+		updateAnswer(qn.id, VAL_ANW.ANW_REPORT);
 	};
 
     $scope.options = {
