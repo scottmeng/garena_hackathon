@@ -185,13 +185,15 @@ def user(request):
         myAnswers = AnswerHistory.objects.filter(user=user)
         for answer in myAnswers:
             ques = answer.question
+            if ques.right_count + ques.left_count == 0:
+                continue
             if answer.answer == AnswerHistory.LEFT:
                 score = ques.left_count * 1.0 / (ques.right_count + ques.left_count)
                 sum += score
                 if score < HIGHLIGHT_SCORE:
                     highlights.append(ques)
             elif answer.answer == AnswerHistory.RIGHT:
-                score += ques.right_count * 1.0 / (ques.right_count + ques.left_count)
+                score = ques.right_count * 1.0 / (ques.right_count + ques.left_count)
                 sum += score
                 if score < HIGHLIGHT_SCORE:
                     highlights.append(ques)
