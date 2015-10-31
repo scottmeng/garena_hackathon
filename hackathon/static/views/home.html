@@ -1,9 +1,11 @@
 <div>
-	<a class="icon pull-left" style="padding: 0px; display: inline-block" href="/#/me">
-	  <span style="height: 40px; font-size:12px"><img ng-src="http://188.166.235.221{{user.avatar}}" class="circular-img" style="height: 40px; width: 40px"></span>
+	<a class="" style="margin:8px; padding: 0px 10px; display: inline-block; font-size:16px" href="/#/me">
+	  <span style="height: 40px; font-size:12px"><img ng-src="http://188.166.235.221{{user.avatar}}" class="circular-img" style="height: 60px; width: 60px; vertical-align: middle"></span>
 	  {{ user.last_name }} {{ user.first_name}}
 	</a>
-	<a class="icon icon-compose pull-right" style="display:inline-block" href="/#/create"></a>
+	<a href="/#/create" class="pull-right">
+	  <span class="icon icon-plus" style="height:60px; width: 60px; line-height:60px; text-align:center; font-size: 32px"></span>
+	</a>	
 </div>
 
 <div id="viewport">
@@ -41,6 +43,6 @@
 	</ul>
 </div>
 <div style="width:100%; text-align:center" ng-show="topQn">
-	<button class="btn btn-negative" style="display:inline-block" ng-click="report(topQn);">Report</button>
-	<button class="btn" style="display:inline-block" ng-click="skip(topQn);">Skip</button>
+	<button class="btn btn-negative" style="display:inline-block; width: 30%; height: 40px; font-size:16px; margin-right: 24px" ng-click="report(topQn);">Report</button>
+	<button class="btn" style="display:inline-block; width: 30%; height: 40px; font-size:16px" ng-click="skip(topQn);">Skip</button>
 </div>

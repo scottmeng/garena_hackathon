@@ -42,7 +42,7 @@ def login(request):
     return render(request, 'login.html')
 
 def login_failed(request):
-    return render_to_response('login_failed.html', context_instance=RequestContext(request))
+    return render(request, 'login.html')
 
 def logout(request):
     auth_logout(request)
