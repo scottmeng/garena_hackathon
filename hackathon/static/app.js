@@ -203,6 +203,8 @@ app.controller('HomeController', function($scope, $rootScope, $http, HeaderState
 });
 
 app.controller('MeController', function($scope, $rootScope, $http, HeaderState, TabState) {
+	$scope.uniqueness = {};
+
 	var init = function() {
 		HeaderState.setHeaderVisible(true, 'Unique Me');
 		TabState.setTabVisible(true);
@@ -213,6 +215,21 @@ app.controller('MeController', function($scope, $rootScope, $http, HeaderState, 
 		$http.get('/me')
 			.then(function(resp) {
 				$scope.user = resp.data;
+				$scope.uniqueness.percentage = resp.data.uniqueness * 100;
+				console.log(resp.data);
+
+				if ($scope.uniqueness.percentage > 90) {
+					$scope.uniqueness.label = 'Wow! You are more mysterious than unicorn!';
+				} else if ($scope.uniqueness.percentage > 70) {
+					$scope.uniqueness.label = 'A dragon you should be! Few have ever seen your trace.';
+				} else if ($scope.uniqueness.percentage > 50) {
+					$scope.uniqueness.label = 'You are just like a vampire - living in the society yet hard to spot.';
+				} else if ($scope.uniqueness.percentage > 30) {
+					$scope.uniqueness.label = 'Just like the Yetis, you live in a distant world.';
+				} else {
+					$scope.uniqueness.label = 'You are a perfectly normal human being and that shall be your uniqueness!';
+				}
+				console.log($scope.user);
 			});
 	};
 	init();
