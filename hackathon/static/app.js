@@ -134,16 +134,16 @@ app.controller('HomeController', function($scope, $rootScope, $http, HeaderState
 		$scope.questions.splice(index, 1);
 		$scope.topQn = $scope.questions[$scope.questions.length - 1];
 
-		if ($scope.questions.length === 0) {
-			getQuestions();
-		}
-
 		var data = {
 			'answer': anw
 		};
 		console.log(data);
 		$http.post('/answers/' + qn.id + '/', data)
-		.then(function(resp) {}, function(resp) {
+		.then(function(resp) {
+			if ($scope.questions.length === 0) {
+				getQuestions();
+			}
+		}, function(resp) {
 			$scope.error = "network error! please try again later";
 			console.log('updateAnswer', 'failed to update answer');
 		});
