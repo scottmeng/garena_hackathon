@@ -16,22 +16,8 @@
 		<p class="answer-label">{{ topQn.right }}</p>
 	</div>
 
-	<ul class="stack" swing-stack swing-options="options">
-	    <li
-	        swing-card
-	        swing-on-throwoutleft="throwoutleft($index, eventName, eventObject)"
-	        swing-on-throwoutright="throwoutright($index, eventName, eventObject)"
-	        swing-on-dragstart="dragstart(eventName, eventObject)"
-	        swing-on-dragmove="dragmove(eventName, eventObject)"
-	        swing-on-dragend="dragend(eventName, eventObject)"
-	        class="question-card"
-	        ng-repeat="question in questions"
-	        ng-style="{'border-color': colors[0].border}">
-	        <div class="image" ng-style="{'background-image':'url('+question.url+')'}"></div>
-	        <!-- <img ng-src="{{ question.url }}" style="width:100%"> -->
-	        <p class="body" ng-style="{'background-color': colors[0].txtBg}" style="text-align:center">{{ question.question }}</p>
-	    </li>
-	    <div class="stack-end" ng-show="!topQn">
+	<div class="stack">
+		<div class="stack-end" ng-show="!topQn" style="position:absolute; left: 0px; top: 0px;">
 	    	<span class="label">No more questions waiting for you to answer</span>
 	    	<br>
 	    	<br>
@@ -43,7 +29,23 @@
 				</button>
 	    	</a>
 	    </div>
-	</ul>
+		<ul class="qn-stack" swing-stack swing-options="options" style="position:absolute; left: 0px; top: 0px;">
+		    <li
+		        swing-card
+		        swing-on-throwoutleft="throwoutleft($index, eventName, eventObject)"
+		        swing-on-throwoutright="throwoutright($index, eventName, eventObject)"
+		        swing-on-dragstart="dragstart(eventName, eventObject)"
+		        swing-on-dragmove="dragmove(eventName, eventObject)"
+		        swing-on-dragend="dragend(eventName, eventObject)"
+		        class="question-card"
+		        ng-repeat="question in questions"
+		        ng-style="{'border-color': colors[0].border}">
+		        <div class="image" ng-style="{'background-image':'url('+question.url+')'}"></div>
+		        <!-- <img ng-src="{{ question.url }}" style="width:100%"> -->
+		        <p class="body" ng-style="{'background-color': colors[0].txtBg}" style="text-align:center">{{ question.question }}</p>
+		    </li>
+		</ul>
+	</div>
 </div>
 <div style="width:100%; text-align:center" ng-show="topQn">
 	<button class="btn btn-negative" style="display:inline-block; width: 30%; height: 40px; font-size:16px; margin-right: 24px" ng-click="report(topQn);">Report</button>
