@@ -193,7 +193,7 @@ app.controller('HomeController', function($scope, $rootScope, $http, HeaderState
 
 	$scope.report = function(qn) {
 		var index = $scope.questions.indexOf(qn);
-		updateAnswer(qn.id, VAL_ANW.ANW_REPORT);
+		updateAnswer(index, VAL_ANW.ANW_REPORT);
 	};
 
     $scope.options = {
