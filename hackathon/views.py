@@ -75,9 +75,9 @@ def questions_list(request):
         data = JSONParser().parse(request)
         data['user'] = request.user.id
         try:
-            data['url'] = fetch_related_image(data['question']) or ''
+            data['url'] = fetch_related_image(data['question'])
         except Exception as e:
-            data['url'] = ''
+            data['url'] = 'https://cdn.vectorstock.com/i/composite/88,69/question-mark-vector-1068869.jpg'
         serializer = QuestionCreateSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
