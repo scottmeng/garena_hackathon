@@ -76,3 +76,14 @@
 textarea {
 	padding: 12px;
 }
+
+.login_logo {
+	margin-top : 50px;
+	margin-bottom : 20px;
+}
+
+.login_button {
+	padding-top: 50px;
+	margin-left:60px;
+	margin-right: 60px;
+}
