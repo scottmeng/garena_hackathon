@@ -71,7 +71,10 @@ def questions_list(request):
     if request.method == 'POST':
         data = JSONParser().parse(request)
         data['user'] = request.user.id
-        data['url'] = fetch_related_image(data['question']) or ''
+        try:
+            data['url'] = fetch_related_image(data['question']) or ''
+        except Exception as e:
+            data['url'] = ''
         serializer = QuestionCreateSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
@@ -83,10 +86,9 @@ class MyOpener(FancyURLopener):
 
 def fetch_related_image(question):
     searchTerm = question
-    searchTerm = searchTerm.replace(' ','%20')
-    print(searchTerm)
     params = {'v': '1.0', 'q': searchTerm.encode('utf8'), 'start': 0, 'userip': 'MyIP'}
     params = urlencode(params)
+    params = params.replace(' ','%20')
     url = ('https://ajax.googleapis.com/ajax/services/search/images?' + params)
     request = urllib2.Request(url, None, {'Referer': 'testing'})
     response = urllib2.urlopen(request)
@@ -96,7 +98,6 @@ def fetch_related_image(question):
     dataInfo = data['results']
 
     for myUrl in dataInfo:
-        print(myUrl['unescapedUrl'])
         return myUrl['unescapedUrl']
 
 @login_required(login_url='/login/')
@@ -124,7 +125,7 @@ def questions_edit(request,pk):
 @csrf_exempt
 def my_questions(request):
     if request.method == 'GET':
-        questions = models.Question.objects.filter(user_id=request.use.id
+        questions = models.Question.objects.filter(user_id=request.user.id
                                                    ).order_by('-create_time')[:10]
         serializer = QuestionSerializer(questions, many=True)
         return JSONResponse(serializer.data)
