@@ -13,6 +13,7 @@ from hackathon.models import AnswerHistory
 from hackathon.serializer import QuestionSerializer
 from django.contrib.auth.models import User
 from django.db.models import F
+from django.db.models import Q
 import operator
 from django.db import transaction
 from urllib import FancyURLopener
@@ -42,7 +43,7 @@ def login(request):
     return render(request, 'login.html')
 
 def login_failed(request):
-    return render_to_response('login_failed.html', context_instance=RequestContext(request))
+    return render(request, 'login.html')
 
 def logout(request):
     auth_logout(request)
@@ -56,8 +57,11 @@ def questions_list(request):
         my_answers = models.AnswerHistory.objects.filter(user_id=request.user.id)
         my_answers_id = list(x.question_id for x in my_answers)
 
-        questions = models.Question.objects.exclude(id__in=my_answers_id
-                                                    ).order_by('-left_count')
+        my_questions = models.Question.objects.filter(user_id=request.user.id).exclude(id__in=my_answers_id)
+        my_questions_id = list(x.id for x in my_questions)
+
+        questions = models.Question.objects.all().exclude(id__in=my_answers_id).order_by('-left_count')
+
         questions_id = []
         for question in questions:
             questions_id.append(question.id)
@@ -65,10 +69,15 @@ def questions_list(request):
             question.save()
             if len(questions_id) >= 50:
                 break
+
         questions = models.Question.objects.filter(id__in=questions_id)
         sample_size = min(10,questions.count())
         questions = random.sample(questions, sample_size)
-        serializer = QuestionSerializer(questions, many=True)
+        questions_id = list(x.id for x in questions)
+
+        new_questions = models.Question.objects.filter(Q(id__in=questions_id)|
+                                                       Q(id__in=my_questions_id)).order_by('-create_time')
+        serializer = QuestionSerializer(new_questions, many=True)
         return JSONResponse(serializer.data)
 
     if request.method == 'POST':
