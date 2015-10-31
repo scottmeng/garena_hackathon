@@ -122,7 +122,7 @@ def questions_edit(request,pk):
 @csrf_exempt
 def my_questions(request):
     if request.method == 'GET':
-        questions = models.Question.objects.filter(user_id=request.use.id
+        questions = models.Question.objects.filter(user_id=request.user.id
                                                    ).order_by('-create_time')[:10]
         serializer = QuestionSerializer(questions, many=True)
         return JSONResponse(serializer.data)
