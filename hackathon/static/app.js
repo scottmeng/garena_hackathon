@@ -103,6 +103,7 @@ app.controller('HomeController', function($scope, $rootScope, $http, HeaderState
 	}];
 
 	$rootScope.bgColor = $scope.colors[0].bg;
+	$rootScope.allowPadding = false;
 
 	var init = function() {
 		HeaderState.setHeaderVisible(false, null);
@@ -207,6 +208,7 @@ app.controller('MeController', function($scope, $rootScope, $http, HeaderState, 
 		TabState.setTabVisible(true);
 		TabState.setTabSelection(0);
 		$rootScope.bgColor = '#FFF';
+		$rootScope.allowPadding = true;
 
 		$http.get('/me')
 			.then(function(resp) {
@@ -222,6 +224,7 @@ app.controller('MyQuestionsController', function($scope, $rootScope, $http, Head
 		TabState.setTabVisible(true);
 		TabState.setTabSelection(1);
 		$rootScope.bgColor = '#FFF';
+		$rootScope.allowPadding = true;
 
 		$http.get('/questions/me/')
 			.then(function(resp) {
@@ -238,6 +241,7 @@ app.controller('MyAnswersController', function($scope, $rootScope, $http, Header
 		TabState.setTabVisible(true);
 		TabState.setTabSelection(2);
 		$rootScope.bgColor = '#FFF';
+		$rootScope.allowPadding = true;
 
 		$http.get('/answers')
 			.then(function(resp) {
@@ -253,9 +257,13 @@ app.controller('NewQuestionController', function($scope, $rootScope, $http, $loc
 		HeaderState.setHeaderVisible(true, 'Create Question');
 		TabState.setTabVisible(false);
 		$rootScope.bgColor = '#FFF';
+		$rootScope.allowPadding = true;
 	};
 
-	$scope.question = {};
+	$scope.question = {
+		left: 'No',
+		right: 'Yes'
+	};
 	$scope.error = null;
 
 	$scope.goBack = function() {
@@ -264,22 +272,45 @@ app.controller('NewQuestionController', function($scope, $rootScope, $http, $loc
 
 	$scope.uploadQuestion = function(body, left, right) {
 		$scope.error = '';
-		if (!body || body.trim() === '') {
+
+		if (!body) {
 			$scope.error = 'Question body cannot be empty';
 			return;
+		} else {
+			body = body.trim().replace(/[\"\'\\]/g, '');
+			console.log(body);
+			if (body === '') {
+				$scope.error = 'Question body cannot be empty';
+				return;
+			}
 		}
-		if (!left || left.trim() === '') {
+
+		if (!left) {
 			$scope.error = 'Left answer cannot be empty';
 			return;
+		} else {
+			left = left.trim().replace(/[\"\'\\]/g, '');
+			if (left === '') {
+				$scope.error = 'Left answer cannot be empty';
+				return;
+			}
 		}
-		if (!right || right.trim() === '') {
+
+		if (!right) {
 			$scope.error = 'Right answer cannot be empty';
 			return;
+		} else {
+			right = right.trim().replace(/[\"\'\\]/g, '');
+			if (right === '') {
+				$scope.error = 'Right answer cannot be empty';
+				return;
+			}
 		}
+
 		var question = {
-			question: body.trim(),
-			left: left.trim(),
-			right: right.trim()
+			question: body,
+			left: left,
+			right: right
 		};
 		console.log(question);
 		$http.post('/questions/', question)
