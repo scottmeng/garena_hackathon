@@ -260,7 +260,10 @@ app.controller('NewQuestionController', function($scope, $rootScope, $http, $loc
 		$rootScope.allowPadding = true;
 	};
 
-	$scope.question = {};
+	$scope.question = {
+		left: 'No',
+		right: 'Yes'
+	};
 	$scope.error = null;
 
 	$scope.goBack = function() {
@@ -269,22 +272,45 @@ app.controller('NewQuestionController', function($scope, $rootScope, $http, $loc
 
 	$scope.uploadQuestion = function(body, left, right) {
 		$scope.error = '';
-		if (!body || body.trim() === '') {
+
+		if (!body) {
 			$scope.error = 'Question body cannot be empty';
 			return;
+		} else {
+			body = body.trim().replace(/[\"\'\\]/g, '');
+			console.log(body);
+			if (body === '') {
+				$scope.error = 'Question body cannot be empty';
+				return;
+			}
 		}
-		if (!left || left.trim() === '') {
+
+		if (!left) {
 			$scope.error = 'Left answer cannot be empty';
 			return;
+		} else {
+			left = left.trim().replace(/[\"\'\\]/g, '');
+			if (left === '') {
+				$scope.error = 'Left answer cannot be empty';
+				return;
+			}
 		}
-		if (!right || right.trim() === '') {
+
+		if (!right) {
 			$scope.error = 'Right answer cannot be empty';
 			return;
+		} else {
+			right = right.trim().replace(/[\"\'\\]/g, '');
+			if (right === '') {
+				$scope.error = 'Right answer cannot be empty';
+				return;
+			}
 		}
+
 		var question = {
-			question: body.trim(),
-			left: left.trim(),
-			right: right.trim()
+			question: body,
+			left: left,
+			right: right
 		};
 		console.log(question);
 		$http.post('/questions/', question)

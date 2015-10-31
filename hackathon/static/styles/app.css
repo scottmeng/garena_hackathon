@@ -43,7 +43,7 @@
 	padding-left: 2%;
 	padding-right: 2%;
 	background-color: #AFAFAF;
-	border-radius: 100% / 50%;
+	border-radius: 80% / 50%;
 }
 
 .section-left {
@@ -63,4 +63,16 @@
 .section-answer .answer-label {
 	font-size:20px;
 	color: #fff;
+}
+
+.label-line {
+	margin-left: 14px;
+}
+
+.form-entry {
+	margin-top: 8px;
+}
+
+textarea {
+	padding: 12px;
 }
