@@ -1,6 +1,7 @@
 from requests import request, HTTPError
 from django.core.files.base import ContentFile
 from hackathon.models import User_Profile
+from settings import MEDIA_ROOT
 
 def save_profile_picture(backend, user, response, details, is_new=False,
                          *args, **kwargs):
@@ -15,7 +16,7 @@ def save_profile_picture(backend, user, response, details, is_new=False,
             pass
         else:
             fileName = 'avatar/{0}_social.jpg'.format(user.pk)
-            saveName = 'LorR/avatar/{0}_social.jpg'.format(user.pk)
+            saveName = MEDIA_ROOT + '{0}_social.jpg'.format(user.pk)
             localFile = open(saveName, 'w')
             localFile.write(response.content)
             localFile.close()
