@@ -16,7 +16,7 @@
 </head>
 <body>
 <div class="container">
-  <header class="bar bar-nav" ng-controller="HeaderController">
+  <header class="bar bar-nav" ng-controller="HeaderController" ng-show="headerState.isHeaderVisible">
     <div ng-include src="'/static/views/header.html'"></div>
   </header>
   <div ng-view class="content"></div>
