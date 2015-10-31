@@ -1,7 +1,28 @@
-{% if user and not user.is_anonymous %}
-  <a>Hello, {{ user.get_full_name }}!</a>
-  <br>
-  <a href="/logout">Logout</a>
-{% else %}
-  <a href="{% url 'social:begin' 'facebook' %}">Login with facebook</a>
-{% endif %}
+<!doctype html>
+<html lang="en" ng-app="LoR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <title>LorR Login</title>
+  <link rel="stylesheet" type="text/css" href="/static/vendor/ratchet/css/ratchet.css">
+  <script type="text/javascript" src="/static/app.js"></script>
+  <link rel="stylesheet" type="text/css" href="/static/styles/app.css">
+</head>
+<body>
+  <div class="login_logo" align="center">
+      <img src="/static/ic_launcher_360.png" />
+  </div>
+  <div class="login_button" align="center">
+    {% if user and not user.is_anonymous %}
+      <a>Hello, {{ user.get_full_name }}!</a>
+        <br>
+      <a class="button" href="/logout"><button class="btn btn-primary btn-block">Logout</button></a>
+      {% else %}
+      <a class="button" href="{% url 'social:begin' 'facebook' %}"><button class="btn btn-primary btn-block">Login with facebook</button></a>
+      {% endif %}
+  </div>
+
+</body>
+</html>
