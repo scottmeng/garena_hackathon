@@ -20,6 +20,7 @@ import json
 import re
 from urllib import urlencode
 import urllib2
+import random
 
 HIGHLIGHT_SCORE = 0.2
 
@@ -56,15 +57,17 @@ def questions_list(request):
         my_answers_id = list(x.question_id for x in my_answers)
 
         questions = models.Question.objects.exclude(id__in=my_answers_id
-                                                    ).order_by('-create_time')
+                                                    ).order_by('-left_count')
         questions_id = []
         for question in questions:
             questions_id.append(question.id)
             question.view_count = question.view_count + 1
             question.save()
-            if len(questions_id) >= 10:
+            if len(questions_id) >= 50:
                 break
         questions = models.Question.objects.filter(id__in=questions_id)
+        sample_size = min(10,questions.count())
+        questions = random.sample(questions, sample_size)
         serializer = QuestionSerializer(questions, many=True)
         return JSONResponse(serializer.data)
 
