@@ -191,7 +191,7 @@ def user(request):
                 if score < HIGHLIGHT_SCORE:
                     highlights.append(ques)
             elif answer.answer == AnswerHistory.RIGHT:
-                score += ques.right_count * 1.0 / (ques.right_count + ques.left_count)
+                score = ques.right_count * 1.0 / (ques.right_count + ques.left_count)
                 sum += score
                 if score < HIGHLIGHT_SCORE:
                     highlights.append(ques)
