@@ -114,6 +114,11 @@ app.controller('HomeController', function($scope, $rootScope, $http, HeaderState
 				$scope.user = resp.data;
 			});
 
+		getQuestions();
+	};
+
+
+	var getQuestions = function() {
 		$http.get('/questions')
 			.then(function(resp) {
 				$scope.questions = resp.data;
@@ -129,6 +134,10 @@ app.controller('HomeController', function($scope, $rootScope, $http, HeaderState
 		$scope.questions.splice(index, 1);
 		$scope.topQn = $scope.questions[$scope.questions.length - 1];
 		$scope.$apply();
+
+		if ($scope.questions.length === 0) {
+			getQuestions();
+		}
 
 		var data = {
 			'answer': anw
@@ -191,10 +200,9 @@ app.controller('HomeController', function($scope, $rootScope, $http, HeaderState
 
     $scope.options = {
         throwOutConfidence: function (offset, elementWidth) {
-            return Math.min(Math.abs(offset) / 200, 1);
+            return Math.min(Math.abs(offset) / 120, 1);
         },
         isThrowOut: function (offset, elementWidth, throwOutConfidence) {
-            //console.log('isThrowOut', offset, elementWidth, throwOutConfidence);
             return throwOutConfidence === 1;
         }
     };

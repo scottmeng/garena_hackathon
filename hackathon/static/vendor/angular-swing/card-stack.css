@@ -21,8 +21,8 @@ input {
   width: 100%;
   position: relative; }
   #viewport .stack {
-    width: 50%;
-    padding-bottom: 70%;
+    width: 60%;
+    padding-bottom: 80%;
     position: relative;
     margin: 15% auto;
     border-radius: 10px; }
