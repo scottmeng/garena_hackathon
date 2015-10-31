@@ -73,6 +73,16 @@
 	margin-top: 8px;
 }
 
+.result-higher {
+	color: #00CC4C;
+	font-weight: bold;
+}
+
+.result-lower {
+	color: #FF8000;
+	font-weight: normal;
+}
+
 textarea {
 	padding: 12px;
 }

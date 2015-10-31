@@ -253,6 +253,17 @@ app.controller('MyQuestionsController', function($scope, $rootScope, $http, Head
 			.then(function(resp) {
 				console.log(resp);
 				$scope.questions = resp.data;
+
+				$scope.questions.forEach(function(item) {
+					var allCount = item.left_count + item.right_count;
+					if (!allCount || allCount === 0) {
+						item.leftPerc = 0;
+						item.rightPerc = 0;
+					} else {
+						item.leftPerc = item.left_count / allCount * 100;
+						item.rightPerc = item.right_count / allCount * 100;
+					}
+				});
 			});
 	};
 	init();
@@ -270,6 +281,18 @@ app.controller('MyAnswersController', function($scope, $rootScope, $http, Header
 			.then(function(resp) {
 				console.log(resp);
 				$scope.answers = resp.data;
+
+				$scope.answers.forEach(function(item) {
+					var allCount = item.question.left_count + item.question.right_count;
+					console.log(allCount);
+					if (!allCount || allCount === 0) {
+						item.leftPerc = 0;
+						item.rightPerc = 0;
+					} else {
+						item.leftPerc = item.question.left_count / allCount * 100;
+						item.rightPerc = item.question.right_count / allCount * 100;
+					}
+				});
 			});
 	};
 	init();

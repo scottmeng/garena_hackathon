@@ -1,10 +1,11 @@
 <ul class="table-view">
-  <li class="table-view-cell media" ng-repeat="answer in answers">
-    <a class="navigate-right">
-      <img class="media-object pull-left" src="http://placehold.it/42x42">
-      <div class="media-body">
-        <p>{{ answer.question.question }}</p>
-      </div>
-    </a>
-  </li>
+	<li class="table-view-cell" ng-repeat="answer in answers" style="padding-right:15px">
+		<div>
+			<p style="display:inline-block; width: 70%; font-size: 16px">{{ answer.question.question }}</p>
+			<div style="display:inline-block; width: 28%; text-align: right">
+				<p ng-class="{true: 'result-higher', false: 'result-lower'}[answer.leftPerc > 50]">{{ answer.question.left }} - {{ answer.leftPerc }}%</p>
+				<p ng-class="{true: 'result-higher', false: 'result-lower'}[answer.rightPerc > 50]">{{ answer.question.right }} - {{ answer.rightPerc }}%</p>
+			</div>
+		</div>
+	</li>
 </ul>
