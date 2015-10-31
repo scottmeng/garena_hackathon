@@ -88,12 +88,21 @@ app.controller('TabController', function($scope, TabState) {
 	$scope.tabState = TabState.getTabState();
 });
 
-app.controller('HomeController', function($scope, $http, HeaderState, TabState, VAL_ANW) {
+app.controller('HomeController', function($scope, $rootScope, $http, HeaderState, TabState, VAL_ANW) {
 	$scope.questions = [];
 	$scope.topQn = null;
 	$scope.leftProx = 0;
 	$scope.rightProx = 0;
 	$scope.error = null;
+
+	$scope.colors = [{
+		selection: '#7D1935',
+		border: '#4A96AD',
+		txtBg: '#6FC3DC',
+		bg: '#F5F3EE'
+	}];
+
+	$rootScope.bgColor = $scope.colors[0].bg;
 
 	var init = function() {
 		HeaderState.setHeaderVisible(false, null);
@@ -192,11 +201,12 @@ app.controller('HomeController', function($scope, $http, HeaderState, TabState, 
     init();
 });
 
-app.controller('MeController', function($scope, $http, HeaderState, TabState) {
+app.controller('MeController', function($scope, $rootScope, $http, HeaderState, TabState) {
 	var init = function() {
 		HeaderState.setHeaderVisible(true, 'Unique Me');
 		TabState.setTabVisible(true);
 		TabState.setTabSelection(0);
+		$rootScope.bgColor = '#FFF';
 
 		$http.get('/me')
 			.then(function(resp) {
@@ -206,11 +216,12 @@ app.controller('MeController', function($scope, $http, HeaderState, TabState) {
 	init();
 });
 
-app.controller('MyQuestionsController', function($scope, $http, HeaderState, TabState) {
+app.controller('MyQuestionsController', function($scope, $rootScope, $http, HeaderState, TabState) {
 	var init = function() {
 		HeaderState.setHeaderVisible(true, 'My Questions');
 		TabState.setTabVisible(true);
 		TabState.setTabSelection(1);
+		$rootScope.bgColor = '#FFF';
 
 		$http.get('/questions/me/')
 			.then(function(resp) {
@@ -221,11 +232,12 @@ app.controller('MyQuestionsController', function($scope, $http, HeaderState, Tab
 	init();
 });
 
-app.controller('MyAnswersController', function($scope, $http, HeaderState, TabState) {
+app.controller('MyAnswersController', function($scope, $rootScope, $http, HeaderState, TabState) {
 	var init = function() {
 		HeaderState.setHeaderVisible(true, 'My Answers');
 		TabState.setTabVisible(true);
 		TabState.setTabSelection(2);
+		$rootScope.bgColor = '#FFF';
 
 		$http.get('/answers')
 			.then(function(resp) {
@@ -236,13 +248,15 @@ app.controller('MyAnswersController', function($scope, $http, HeaderState, TabSt
 	init();
 });
 
-app.controller('NewQuestionController', function($scope, $http, $location, HeaderState) {
+app.controller('NewQuestionController', function($scope, $rootScope, $http, $location, HeaderState, TabState) {
 	var init = function() {
 		HeaderState.setHeaderVisible(true, 'Create Question');
+		TabState.setTabVisible(false);
+		$rootScope.bgColor = '#FFF';
 	};
 
 	$scope.question = {};
-	$scope.error = '';
+	$scope.error = null;
 
 	$scope.goBack = function() {
 		$location.path('/#/');

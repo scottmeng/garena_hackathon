@@ -29,11 +29,15 @@
 .question-card .body {
 	background: #DADADA;
 	height: 30%;
-	font-size: 12px;
+	font-size: 18px;
+	color: #FAFAFA;
+	text-align: left;
+	padding: 6px 10px;
 }
 
 .section-answer {
 	width: 18%;
+	margin-top: 15%;
 	padding-top: 15%;
 	padding-bottom: 15%;
 	padding-left: 2%;
@@ -57,4 +61,6 @@
 }
 
 .section-answer .answer-label {
+	font-size:20px;
+	color: #fff;
 }

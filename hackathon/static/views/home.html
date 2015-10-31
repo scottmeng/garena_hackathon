@@ -7,10 +7,10 @@
 </div>
 
 <div id="viewport">
-	<div class="section-answer section-left" ng-if="topQn" ng-style="{'opacity': 0.3+leftProx*0.7}">
+	<div class="section-answer section-left" ng-if="topQn" ng-style="{'opacity': 0.5+leftProx*0.5, 'background-color': colors[0].selection}">
 		<p class="answer-label">{{ topQn.left }}</p>
 	</div>
-	<div class="section-answer section-right" ng-if="topQn" ng-style="{'opacity': 0.3+rightProx*0.7}">
+	<div class="section-answer section-right" ng-if="topQn" ng-style="{'opacity': 0.5+rightProx*0.5, 'background-color': colors[0].selection}">
 		<p class="answer-label">{{ topQn.right }}</p>
 	</div>
 
@@ -23,10 +23,11 @@
 	        swing-on-dragmove="dragmove(eventName, eventObject)"
 	        swing-on-dragend="dragend(eventName, eventObject)"
 	        class="question-card"
-	        ng-repeat="question in questions">
+	        ng-repeat="question in questions"
+	        ng-style="{'border-color': colors[0].border}">
 	        <div class="image" ng-style="{'background-image':'url('+question.url+')'}"></div>
 	        <!-- <img ng-src="{{ question.url }}" style="width:100%"> -->
-	        <p class="body">{{ question.question }}</p>
+	        <p class="body" ng-style="{'background-color': colors[0].txtBg}">{{ question.question }}</p>
 	    </li>
 	    <div class="stack-end" ng-show="!topQn">
 	    	<span class="label">:( No more questions waiting for you to answer</span>
