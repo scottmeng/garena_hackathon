@@ -76,7 +76,7 @@ def questions_list(request):
         questions_id = list(x.id for x in questions)
 
         new_questions = models.Question.objects.filter(Q(id__in=questions_id)|
-                                                       Q(id__in=my_questions_id)).order_by('-create_time')
+                                                       Q(id__in=my_questions_id)).order_by('create_time')
         serializer = QuestionSerializer(new_questions, many=True)
         return JSONResponse(serializer.data)
 
