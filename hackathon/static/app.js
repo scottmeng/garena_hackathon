@@ -103,6 +103,7 @@ app.controller('HomeController', function($scope, $rootScope, $http, HeaderState
 	}];
 
 	$rootScope.bgColor = $scope.colors[0].bg;
+	$rootScope.allowPadding = false;
 
 	var init = function() {
 		HeaderState.setHeaderVisible(false, null);
@@ -207,6 +208,7 @@ app.controller('MeController', function($scope, $rootScope, $http, HeaderState, 
 		TabState.setTabVisible(true);
 		TabState.setTabSelection(0);
 		$rootScope.bgColor = '#FFF';
+		$rootScope.allowPadding = true;
 
 		$http.get('/me')
 			.then(function(resp) {
@@ -222,6 +224,7 @@ app.controller('MyQuestionsController', function($scope, $rootScope, $http, Head
 		TabState.setTabVisible(true);
 		TabState.setTabSelection(1);
 		$rootScope.bgColor = '#FFF';
+		$rootScope.allowPadding = true;
 
 		$http.get('/questions/me/')
 			.then(function(resp) {
@@ -238,6 +241,7 @@ app.controller('MyAnswersController', function($scope, $rootScope, $http, Header
 		TabState.setTabVisible(true);
 		TabState.setTabSelection(2);
 		$rootScope.bgColor = '#FFF';
+		$rootScope.allowPadding = true;
 
 		$http.get('/answers')
 			.then(function(resp) {
@@ -253,6 +257,7 @@ app.controller('NewQuestionController', function($scope, $rootScope, $http, $loc
 		HeaderState.setHeaderVisible(true, 'Create Question');
 		TabState.setTabVisible(false);
 		$rootScope.bgColor = '#FFF';
+		$rootScope.allowPadding = true;
 	};
 
 	$scope.question = {};
