@@ -96,10 +96,10 @@ app.controller('HomeController', function($scope, $rootScope, $http, HeaderState
 	$scope.error = null;
 
 	$scope.colors = [{
-		selection: '#7D1935',
-		border: '#4A96AD',
-		txtBg: '#6FC3DC',
-		bg: '#F5F3EE'
+		selection: '#F2635F',
+		border: '#41AAC4',
+		txtBg: '#4EBAD5',
+		bg: '#FCF4D9'
 	}];
 
 	$rootScope.bgColor = $scope.colors[0].bg;
