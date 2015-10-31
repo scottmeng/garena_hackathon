@@ -221,7 +221,7 @@ app.controller('MeController', function($scope, $rootScope, $http, HeaderState, 
 		$http.get('/me')
 			.then(function(resp) {
 				$scope.user = resp.data;
-				$scope.uniqueness.percentage = resp.data.uniqueness * 100;
+				$scope.uniqueness.percentage = (resp.data.uniqueness * 100).toFixed(2);
 				console.log(resp.data);
 
 				if ($scope.uniqueness.percentage > 90) {
@@ -260,8 +260,8 @@ app.controller('MyQuestionsController', function($scope, $rootScope, $http, Head
 						item.leftPerc = 0;
 						item.rightPerc = 0;
 					} else {
-						item.leftPerc = item.left_count / allCount * 100;
-						item.rightPerc = item.right_count / allCount * 100;
+						item.leftPerc = (item.left_count / allCount * 100).toFixed(0);
+						item.rightPerc = (item.right_count / allCount * 100).toFixed(0);
 					}
 				});
 			});
@@ -289,8 +289,8 @@ app.controller('MyAnswersController', function($scope, $rootScope, $http, Header
 						item.leftPerc = 0;
 						item.rightPerc = 0;
 					} else {
-						item.leftPerc = item.question.left_count / allCount * 100;
-						item.rightPerc = item.question.right_count / allCount * 100;
+						item.leftPerc = (item.question.left_count / allCount * 100).toFixed(0);
+						item.rightPerc = (item.question.right_count / allCount * 100).toFixed(0);
 					}
 				});
 			});
@@ -358,12 +358,11 @@ app.controller('NewQuestionController', function($scope, $rootScope, $http, $loc
 			left: left,
 			right: right
 		};
-		console.log(question);
 		$http.post('/questions/', question)
 			.then(function(resp) {
-				console.log(resp);
+				$location.path('/#/');
 			}, function(resp) {
-				console.log(resp);
+				$scope.error('Network error');
 			});
 	};
 
